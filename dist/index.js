@@ -34,6 +34,7 @@ __export(index_exports, {
   PdfColumn: () => PdfColumn,
   PdfContainer: () => PdfContainer,
   PdfDocumentBuilder: () => PdfDocumentBuilder,
+  PdfHtmlPreview: () => PdfHtmlPreview,
   PdfPadding: () => PdfPadding,
   PdfRow: () => PdfRow,
   PdfSizedBox: () => PdfSizedBox,
@@ -679,12 +680,22 @@ var PDF_THEME = {
   base: [238, 238, 238],
   auxiliar: [0, 0, 0]
 };
+
+// src/render_component.tsx
+var import_jsx_runtime = require("react/jsx-runtime");
+function PdfHtmlPreview(props) {
+  const { root, className, ...opts } = props;
+  const inner = new PdfDocumentBuilder(root, opts).toHtmlPreview();
+  if (!className) return inner;
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className, "data-pdf-html-preview": true, children: inner });
+}
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   PDF_THEME,
   PdfColumn,
   PdfContainer,
   PdfDocumentBuilder,
+  PdfHtmlPreview,
   PdfPadding,
   PdfRow,
   PdfSizedBox,

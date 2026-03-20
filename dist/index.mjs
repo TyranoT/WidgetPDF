@@ -629,11 +629,21 @@ var PDF_THEME = {
   base: [238, 238, 238],
   auxiliar: [0, 0, 0]
 };
+
+// src/render_component.tsx
+import { jsx } from "react/jsx-runtime";
+function PdfHtmlPreview(props) {
+  const { root, className, ...opts } = props;
+  const inner = new PdfDocumentBuilder(root, opts).toHtmlPreview();
+  if (!className) return inner;
+  return /* @__PURE__ */ jsx("div", { className, "data-pdf-html-preview": true, children: inner });
+}
 export {
   PDF_THEME,
   PdfColumn,
   PdfContainer,
   PdfDocumentBuilder,
+  PdfHtmlPreview,
   PdfPadding,
   PdfRow,
   PdfSizedBox,

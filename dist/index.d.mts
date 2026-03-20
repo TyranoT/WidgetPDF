@@ -170,4 +170,12 @@ declare class PdfDocumentBuilder {
     toHtmlPreview(): ReactNode;
 }
 
-export { type Constraints, type CrossAxisAlignment, type EdgeInsets, type HtmlPreviewOptions, type MainAxisAlignment, PDF_THEME, type PaintContext, PdfColumn, PdfContainer, type PdfDecoration, PdfDocumentBuilder, type PdfMargins, PdfPadding, PdfRow, PdfSizedBox, PdfText, PdfWidget, type Rgb, type Size, crossAxisToAlignItems, deflateConstraints, edgeInsetsAll, edgeInsetsSymmetric, edgeInsetsToCssPadding, mainAxisToJustifyContent, marginsAll, measureTextBlock, rgbToCss };
+declare function PdfHtmlPreview(props: {
+    root: PdfWidget;
+    margins?: PdfMargins;
+    orientation?: "p" | "portrait" | "l" | "landscape";
+    format?: string | [number, number];
+    className?: string;
+}): ReactNode;
+
+export { type Constraints, type CrossAxisAlignment, type EdgeInsets, type HtmlPreviewOptions, type MainAxisAlignment, PDF_THEME, type PaintContext, PdfColumn, PdfContainer, type PdfDecoration, PdfDocumentBuilder, PdfHtmlPreview, type PdfMargins, PdfPadding, PdfRow, PdfSizedBox, PdfText, PdfWidget, type Rgb, type Size, crossAxisToAlignItems, deflateConstraints, edgeInsetsAll, edgeInsetsSymmetric, edgeInsetsToCssPadding, mainAxisToJustifyContent, marginsAll, measureTextBlock, rgbToCss };

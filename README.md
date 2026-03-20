@@ -12,7 +12,7 @@ Construa documentos com uma árvore de componentes inspirada no **Flutter** (`Co
 
 </div>
 
-**Índice:** [Conceitos](#conceitos) · [Tutorial](#tutorial-passo-a-passo) · [PdfDocumentBuilder](#pdfdocumentbuilder) · [Widgets](#documentação-dos-widgets) · [Tipos e tema](#tipos-e-tema) · [Utilitários](#utilitários) · [Pré-visualização](#pré-visualização-e-helpers-html) · [Limitações](#limitações-atuais-mvp)
+**Índice:** [Conceitos](#conceitos) · [Tutorial](#tutorial-passo-a-passo) · [PdfDocumentBuilder](#pdfdocumentbuilder) · [`PdfHtmlPreview`](#pdfhtmlpreview) · [Widgets](#documentação-dos-widgets) · [Tipos e tema](#tipos-e-tema) · [Utilitários](#utilitários) · [Pré-visualização](#pré-visualização-e-helpers-html) · [Limitações](#limitações-atuais-mvp)
 
 ---
 
@@ -182,16 +182,14 @@ new PdfDocumentBuilder(root).save("container.pdf");
 
 ### 6. Pré-visualização na interface React
 
-Reutilize o **mesmo** `PdfDocumentBuilder` (ou construa outro com a mesma árvore) e renderize `toHtmlPreview()` dentro de um wrapper com estilo (sombra, borda, escala).
+A forma mais direta em TSX é o componente **`PdfHtmlPreview`** (definido em [`src/render_component.tsx`](src/render_component.tsx)): ele recebe o **mesmo** `PdfWidget` raiz que você usaria no `PdfDocumentBuilder`, aplica margens/orientação/formato opcionais e devolve a folha em mm — com `className` opcional que envolve tudo num `div` com o atributo `data-pdf-html-preview` para estilizar ou testes.
 
 ```tsx
-import { PdfDocumentBuilder, PdfColumn, PdfText } from "@italo-git/widgetpdf";
+import { PdfHtmlPreview, PdfColumn, PdfText, marginsAll } from "@italo-git/widgetpdf";
 
-const previewBuilder = new PdfDocumentBuilder(
-  new PdfColumn({
-    children: [new PdfText("Preview em tempo real")],
-  }),
-);
+const root = new PdfColumn({
+  children: [new PdfText("Preview em tempo real")],
+});
 
 export function PdfPreviewCard() {
   return (
@@ -203,13 +201,21 @@ export function PdfPreviewCard() {
         borderRadius: 8,
       }}
     >
-      {previewBuilder.toHtmlPreview()}
+      <PdfHtmlPreview root={root} margins={marginsAll(14)} className="minha-folha-preview" />
     </div>
   );
 }
 ```
 
-Para **zoom** na tela, aplique `transform: scale(0.5)` no wrapper (o conteúdo continua em mm dentro do `div` da “folha”).
+**Alternativa:** instancie `PdfDocumentBuilder` e chame `toHtmlPreview()` — é o que `PdfHtmlPreview` usa por baixo dos panos.
+
+```tsx
+const previewBuilder = new PdfDocumentBuilder(root, { margins: marginsAll(14) });
+// …
+{previewBuilder.toHtmlPreview()}
+```
+
+Para **zoom** na tela, aplique `transform: scale(0.5)` no wrapper externo (o conteúdo continua em mm dentro do `div` da “folha”).
 
 ---
 
@@ -236,6 +242,32 @@ new PdfDocumentBuilder(root: PdfWidget, options?)
 | `build()`                | `jsPDF`     | Executa `layout` na raiz e `paint` com área útil; devolve o documento para você usar `save`, `output`, etc. |
 | `save(filename: string)` | `void`      | Atalho: `build().save(filename)`.                                                                           |
 | `toHtmlPreview()`        | `ReactNode` | Folha em mm + margens + conteúdo HTML gerado pela árvore (para pré-visualização).                           |
+
+---
+
+## `PdfHtmlPreview`
+
+Componente de pré-visualização em React (fonte: [`src/render_component.tsx`](src/render_component.tsx)). Encapsula `new PdfDocumentBuilder(root, opts).toHtmlPreview()` e, se `className` for passado, envolve o resultado num `<div className={...} data-pdf-html-preview>`.
+
+```tsx
+function PdfHtmlPreview(props: {
+  root: PdfWidget
+  margins?: PdfMargins
+  orientation?: "p" | "portrait" | "l" | "landscape"
+  format?: string | [number, number]
+  className?: string
+}): ReactNode
+```
+
+| Prop            | Descrição                                                                 |
+| --------------- | ------------------------------------------------------------------------- |
+| `root`          | Widget raiz da árvore (obrigatório).                                      |
+| `margins`       | Mesmas regras do `PdfDocumentBuilder` (padrão interno: `marginsAll(14)`). |
+| `orientation`   | Retrato ou paisagem.                                                      |
+| `format`        | Ex.: `"a4"` ou `[largura, altura]` em unidades do jsPDF.                   |
+| `className`     | Se definido, o preview fica dentro de um `div` extra com esse nome.       |
+
+Sem `className`, o retorno é o `ReactNode` “cru” da folha (igual a `toHtmlPreview()`), útil para embutir sem wrapper extra.
 
 ---
 
@@ -388,6 +420,8 @@ Constante com três cores RGB de exemplo (alinhadas a variáveis CSS em um app t
 ---
 
 ## Pré-visualização e helpers HTML
+
+Para a pré-visualização integrada na app, prefira **`PdfHtmlPreview`** (secção anterior) ou `PdfDocumentBuilder.toHtmlPreview()`.
 
 Funções exportadas para quem monta UI própria ou estende widgets e quer espelhar **flexbox** / **cores**:
 
