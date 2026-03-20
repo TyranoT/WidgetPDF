@@ -62,9 +62,13 @@ flowchart LR
 
 ### 1. Instalar dependências
 
+Basta um comando — **React**, **React DOM**, **jsPDF** e tipos TypeScript vêm como dependências do pacote:
+
 ```bash
-npm install @italo-git/widgetpdf react react-dom jspdf @types/react @types/react-dom
+npm install @italo-git/widgetpdf
 ```
+
+Em aplicações que já listam `react` no `package.json`, o npm costuma **deduplicar** para uma única cópia quando as versões são compatíveis.
 
 ### 2. Hello PDF — só texto em coluna
 
