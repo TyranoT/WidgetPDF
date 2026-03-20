@@ -1,0 +1,50 @@
+{
+  "name": "@italo-git/widgetpdf",
+  "version": "1.0.0",
+  "description": "Widget PDF",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TyranoT/WidgetPDF.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/TyranoT/WidgetPDF/issues"
+  },
+  "homepage": "https://github.com/TyranoT/WidgetPDF#readme",
+  "peerDependencies": {
+    "react": "^18 || ^19",
+    "react-dom": "^18 || ^19",
+    "jspdf": "^4.1.0",
+    "jspdf-autotable": "^5.0.7",
+    "@types/react": "^19",
+    "@types/react-dom": "^19"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0",
+    "jspdf": "^4.1.0",
+    "jspdf-autotable": "^5.0.7",
+    "@types/react": "^19",
+    "@types/react-dom": "^19"
+  }
+}
