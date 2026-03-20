@@ -1,7 +1,7 @@
 {
   "name": "@italo-git/widgetpdf",
   "version": "1.0.0",
-  "description": "Widget PDF",
+  "description": "Widget PDF para criação de documentos PDF",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -24,7 +24,7 @@
     "url": "git+https://github.com/TyranoT/WidgetPDF.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Italo Monteiro Leite",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {
