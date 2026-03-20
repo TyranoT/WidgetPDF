@@ -1,6 +1,6 @@
 {
   "name": "@italo-git/widgetpdf",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Widget PDF para criação de documentos PDF",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
